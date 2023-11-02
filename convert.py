@@ -1,5 +1,6 @@
 # Import necessary python libraries e.g. IfcOpenShell, PythonOCC and MiniDom
 import ifcopenshell.geom
+import ifcopenshell.util.unit
 import OCC.Core.BRep
 import OCC.Core.TopExp
 import OCC.Core.TopoDS
@@ -39,7 +40,8 @@ def ring(wire, face):
         while exp.More():
             yield exp.CurrentVertex()
             exp.Next()
-        yield exp.CurrentVertex()
+        # LIQUIDSO
+        # yield exp.CurrentVertex()
 
     return list(map(lambda p: (p.X(), p.Y(), p.Z()), map(OCC.Core.BRep.BRep_Tool.Pnt, vertices())))
 
@@ -88,7 +90,10 @@ def fix_xml_layer(a):
     return 'lyr' + a.replace('$', '').replace(':', '').replace(' ', '').replace('(', '').replace(')', '')
 
 # Access the specific IFC file; external directory: (r"C:/Users/s136146/Desktop/StoreysWindowsMaterialsFacade.ifc")
-ifc_file = ifcopenshell.open('Pilot project 5.ifc')
+ifc_file = ifcopenshell.open('cases/proj2/proj2.ifc')
+
+# LIQUIDSO
+unit_scale = ifcopenshell.util.unit.calculate_unit_scale(ifc_file)
 
 # Create the XML root by making use of MiniDom
 root = minidom.Document()
@@ -135,7 +140,8 @@ for element in site:
     location.appendChild(latitude)
 
     elevation = root.createElement('Elevation')
-    elevation.appendChild(root.createTextNode(str(element.RefElevation)))
+    # LIQUIDSO
+    elevation.appendChild(root.createTextNode(str(element.RefElevation * unit_scale)))
     location.appendChild(elevation)
 
 address = ifc_file.by_type('IfcPostalAddress')
@@ -181,7 +187,8 @@ for element in storeys:
     buildingStorey.appendChild(name)
 
     level = root.createElement('Level')
-    level.appendChild(root.createTextNode(str(element.Elevation)))
+    # LIQUIDSO
+    level.appendChild(root.createTextNode(str(element.Elevation * unit_scale)))
     buildingStorey.appendChild(level)
 
 # Specify the 'Space' element of the gbXML schema; making use of IFC entity 'IfcSpace'
@@ -266,7 +273,8 @@ for s in spaces:
             print('SpaceBoundary')
 
             new_z = element.RelatingSpace.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates[2]
-            new_z = new_z
+            # LIQUIDSO
+            new_z = new_z * unit_scale
 
             polyLoop = root.createElement('PolyLoop')
 
@@ -362,7 +370,8 @@ for element in boundaries:
         print("Surface")
 
         new_z = element.RelatingSpace.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates[2]
-        new_z = new_z
+        # LIQUIDSO
+        new_z = new_z * unit_scale
 
         polyLoop = root.createElement('PolyLoop')
 
@@ -414,7 +423,8 @@ for element in boundaries:
         polyLoop = root.createElement('PolyLoop')
 
         new_z = element.RelatingSpace.ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates[2]
-        new_z = new_z
+        # LIQUIDSO
+        new_z = new_z * unit_scale
 
         for v in get_vertices(space_boundary_shape):
             x, y, z = v
@@ -563,8 +573,11 @@ for element in boundaries:
 
             # Refer to the relating 'IfcMaterialLayerSet' name by iterating through IFC entities
             name = root.createElement('Name')
-            name.appendChild(root.createTextNode(element.RelatedBuildingElement.HasAssociations[0].RelatingMaterial.
-                                                 ForLayerSet.LayerSetName))
+            if hasattr(element.RelatedBuildingElement.HasAssociations[0].RelatingMaterial, "ForLayerSet"):
+                name.appendChild(root.createTextNode(element.RelatedBuildingElement.HasAssociations[0].
+                                                     RelatingMaterial.ForLayerSet.LayerSetName))
+            else:
+                name.appendChild(root.createTextNode(""))
             construction.appendChild(name)
 
             gbxml.appendChild(construction)
@@ -636,7 +649,8 @@ for element in buildingElements:
 
                 thickness = root.createElement('Thickness')
                 thickness.setAttribute('unit', 'Meters')
-                valueT = l.LayerThickness
+                # LIQUIDSO
+                valueT = l.LayerThickness * unit_scale
                 thickness.appendChild(root.createTextNode((str(valueT))))
                 material.appendChild(thickness)
 
@@ -644,16 +658,16 @@ for element in buildingElements:
                 rValue.setAttribute('unit', 'SquareMeterKPerW')
 
                 # Analytical properties of the Material entity can be found directly
-                for material_property in l.Material.HasProperties:
-                    if material_property.Name == 'Pset_MaterialEnergy':
-                        for pset_material_energy in material_property.Properties:
-                            if pset_material_energy.Name == 'ThermalConductivityTemperatureDerivative':
-                                valueR = pset_material_energy.NominalValue.wrappedValue
-                                rValue.setAttribute('unit', 'SquareMeterKPerW')
-                                rValue.appendChild(root.createTextNode(str(valueR)))
-                                material.appendChild(rValue)
+                # for material_property in l.Material.HasProperties:
+                #     if material_property.Name == 'Pset_MaterialEnergy':
+                #         for pset_material_energy in material_property.Properties:
+                #             if pset_material_energy.Name == 'ThermalConductivityTemperatureDerivative':
+                #                 valueR = pset_material_energy.NominalValue.wrappedValue
+                #                 rValue.setAttribute('unit', 'SquareMeterKPerW')
+                #                 rValue.appendChild(root.createTextNode(str(valueR)))
+                #                 material.appendChild(rValue)
 
-                                gbxml.appendChild(material)
+                #                 gbxml.appendChild(material)
 
                 # Specify analytical properties of the 'Material' element by iterating through IFC entities
                 thermalResistance = element.IsDefinedBy
@@ -742,7 +756,7 @@ for element in personInfo:
 gbxml.appendChild(docHistory)
 
 # Create a new XML file and write all created elements to it
-save_path_file = "New_Exported_gbXML.xml"
+save_path_file = "output.xml"
 
 root.writexml( open(save_path_file, "w"),
                indent="  ",
