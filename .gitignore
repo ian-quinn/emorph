@@ -1,4 +1,29 @@
-/.idea/*
-/venv/*
-/openstudio/*
-*.xml
+/.idea
+/venv
+
+# sample files confidential
+/cases/duct
+
+# block simulation outputs
+/openstudio/workflow/run
+/openstudio/workflow/generated_files
+/openstudio/workflow/reports
+/openstudio/workflow/out.osw
+/openstudio/workflow/_.osw
+
+# measures pending for this repo
+# gbXML import
+/openstudio/measures/add_xml_output_control_style
+/openstudio/measures/advanced_import_gbxml
+/openstudio/measures/ChangeBuildingLocation
+/openstudio/measures/gbxml_hvac_import
+/openstudio/measures/gbxml_postprocess
+/openstudio/measures/gbxml_to_openstudio_cleanup
+# geometry
+/openstudio/measures/scale_geometry
+# parameter
+/openstudio/measures/IncreaseRoofRValue
+# settings
+/openstudio/measures/systems_analysis_report_generator
+# analysis
+/openstudio/measures/openstudio_results

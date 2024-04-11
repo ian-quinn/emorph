@@ -1,0 +1,93 @@
+{
+  "seed_file": "blank.osm",
+  "weather_file": "USA_CO_Denver.Intl.AP.725650_TMY3.epw",
+  "measure_paths": [
+    "../measures/"
+  ],
+  "file_paths": [
+    "../weather",
+    "../seeds",
+    "../gbxmls"
+  ],
+  "run_directory": "./run",
+  "steps": [
+    {
+      "measure_dir_name": "set_rectangular_floor_plan",
+      "name": "SetRectangularFloorPlan",
+      "arguments": {
+        "length": 40.0,
+        "width": 20.0,
+        "num_floors": 3.0,
+        "floor_to_floor_height": 3.8,
+        "plenum_height": 1.0, 
+        "perimeter_zone_depth": 4.57
+      }
+    },
+    {
+      "measure_dir_name": "space_type_and_construction_set_wizard",
+      "name": "SpaceTypeAndConstructionSetWizard",
+      "arguments": {
+        "building_type": "SmallOffice",
+        "template": "90.1-2010",
+        "climate_zone": "ASHRAE 169-2013-2A",
+        "create_space_types": true,
+        "create_construction_set": true,
+        "set_building_defaults": true
+      }
+    },
+    {
+      "measure_dir_name": "assign_unique_zones_to_untagged_spaces",
+      "name": "AssignUniqueZonesToUntaggedSpaces",
+      "arguments": { }
+    },
+    {
+      "measure_dir_name": "assign_ideal_loads_system",
+      "name": "AssignIdealLoadsSystem",
+      "arguments": {
+        "cooling_setpoint": 26.0,
+        "heating_setpoint": 18.0
+      }
+    },
+    {
+      "measure_dir_name": "set_simulation_control",
+      "name": "SetSimulationControl",
+      "arguments": {
+        "cooling_sizing_factor": 1.0,
+        "do_plant_sizing": false,
+        "do_system_sizing": true,
+        "do_zone_sizing": true,
+        "end_date": "12/31",
+        "heating_sizing_factor": 1.0,
+        "loads_convergence_tolerance": 0.1,
+        "max_warmup_days": 25,
+        "min_warmup_days": 6,
+        "sim_for_run_period": true,
+        "sim_for_sizing": false,
+        "solar_distribution": "FullExterior",
+        "start_date": "01/01",
+        "temp_convergence_tolerance": 0.5,
+        "timesteps_per_hour": 4,
+        "max_hvac_iterations": 8
+      }
+    },
+    {
+      "measure_dir_name": "add_output_variable",
+      "name": "AddOutputVariable",
+      "arguments": {
+        "variable_name": "Zone Ideal Loads Supply Air Total Cooling Energy"
+      }
+    },
+    {
+      "measure_dir_name": "add_output_variable",
+      "name": "AddOutputVariable",
+      "arguments": {
+        "variable_name": "Zone Mean Air Temperature"
+      }
+    },
+    {
+      "measure_dir_name": "create_csv_output",
+      "name": "CreateCSVOutput",
+      "arguments": { }
+    }
+  ]
+}
