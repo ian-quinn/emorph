@@ -30,7 +30,7 @@ step1.arguments.plenum_height = 1.0
 step1.arguments.perimeter_zone_depth = 4.57
 
 # serialize the following steps if they remain unchanged
-# the best practice may be a formatted string
+# template rendering may be the best option
 osw.steps.append(jsObject())
 step2 = osw.steps[-1]
 step2.measure_dir_name = "space_type_and_construction_set_wizard"

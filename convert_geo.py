@@ -1,3 +1,6 @@
+# The script revised is based on the following repo
+# https://github.com/MGVisschers/IFC-to-gbXML-converter
+
 # Import necessary python libraries e.g. IfcOpenShell, PythonOCC and MiniDom
 import ifcopenshell.geom
 import ifcopenshell.util.unit

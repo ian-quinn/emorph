@@ -1,3 +1,5 @@
+# work in progress
+
 import multiprocessing
 import ifcopenshell
 import ifcopenshell.geom
