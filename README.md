@@ -5,19 +5,19 @@
 
 ```
 emorph
-├ *.py				- scripts demo
+├ *.py                - scripts demo
 ├ /cases	      
 └ /openstudio
-  ├ /gbxmls			- gbXML resource
-  ├ /seeds			- blank/template .osm
-  ├ /weather        - weather resource
-  ├ /measures		- openstudio measures
+  ├ /gbxmls           - gbXML resource
+  ├ /seeds            - blank/template .osm
+  ├ /weather          - weather resource
+  ├ /measures         - openstudio measures
   │ └ /*        
   │   ├ measure.rb
   │   └ measure.xml       
   └ /workflow
-    ├ /run			- Utility functions
-    └ *.osw			- openstudio workflows
+    ├ /run            - Utility functions
+    └ *.osw           - openstudio workflows
 ```
 
 ## Prototype workflow
@@ -33,7 +33,7 @@ This openstudio workflow will create a prototype building with perimeter-core zo
 ```
 or test the workflow by command line
 ```
-openstudio.exe run -w prototype.osw
+> openstudio.exe run -w prototype.osw
 ```
 The best practice to standardize your workflow may be:
 - Serialize your typical configurations in the template .osm file, the Schedule:Compact, SimulationControl, Output:Variables...
@@ -42,4 +42,5 @@ The best practice to standardize your workflow may be:
 ## Reference
 
 [MGVisschers](https://github.com/MGVisschers) / [IFC-to-gbXML-converter](https://github.com/MGVisschers/IFC-to-gbXML-converter)
+
 [Building Component Library](https://bcl.nrel.gov/results/?show_rows=25&page=1&fq=measure_tags:Whole%20Building.Space%20Types)
