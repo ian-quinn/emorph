@@ -27,7 +27,7 @@ This openstudio workflow will create a prototype building with perimeter-core zo
 ```
 # replace the installation path in run_osw.py
 # which is 'C:\openstudio-3.X.0\bin\openstudio.exe' by default
-> py run_osw.py
+> python run_osw.py
 # the script writes a .osw file under ./openstudio/workflow/
 # then execute it by calling openstudio
 ```
@@ -38,6 +38,16 @@ or test the workflow by command line
 The best practice to standardize your workflow may be:
 - Serialize your typical configurations in the template .osm file, the Schedule:Compact, SimulationControl, Output:Variables...
 - Create a standard .osw template with placeholders so that you can render it by user inputs, with engines like Jinja2
+
+## IFC2XML example
+
+Anaconda environment is required to install all dependencies
+
+```
+> conda env create -f env.yaml
+> conda activate ifc2xml
+(ifc2xml) > python IFC_gbXML_Convert.py
+```
 
 ## Reference
 

@@ -25,10 +25,10 @@ settings.set(settings.USE_PYTHON_OPENCASCADE, True)
 
 def sub(shape, ty):
     F = {
-        OCC.Core.TopAbs.TopAbs_FACE: OCC.Core.TopoDS.topods_Face,
-        OCC.Core.TopAbs.TopAbs_WIRE: OCC.Core.TopoDS.topods_Wire,
-        OCC.Core.TopAbs.TopAbs_EDGE: OCC.Core.TopoDS.topods_Edge,
-        OCC.Core.TopAbs.TopAbs_VERTEX: OCC.Core.TopoDS.topods_Vertex,
+        OCC.Core.TopAbs.TopAbs_FACE: OCC.Core.TopoDS.topods.Face,
+        OCC.Core.TopAbs.TopAbs_WIRE: OCC.Core.TopoDS.topods.Wire,
+        OCC.Core.TopAbs.TopAbs_EDGE: OCC.Core.TopoDS.topods.Edge,
+        OCC.Core.TopAbs.TopAbs_VERTEX: OCC.Core.TopoDS.topods.Vertex,
     }[ty]
     exp = OCC.Core.TopExp.TopExp_Explorer(shape, ty)
     while exp.More():
@@ -92,7 +92,8 @@ def fix_xml_cons(a):
 def fix_xml_layer(a):
     return 'lyr' + a.replace('$', '').replace(':', '').replace(' ', '').replace('(', '').replace(')', '')
 
-# Access the specific IFC file; external directory: (r"C:/Users/s136146/Desktop/StoreysWindowsMaterialsFacade.ifc")
+# Access the specific IFC file
+
 ifc_file = ifcopenshell.open('cases/proj2/proj2.ifc')
 
 # LIQUIDSO
